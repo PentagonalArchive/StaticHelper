@@ -1,7 +1,7 @@
 <?php
 use Pentagonal\StaticHelper\InternalHelper;
 
-class TestInternal extends \PHPUnit_Framework_TestCase
+class InternalTest extends \PHPUnit_Framework_TestCase
 {
     public function testStrtoLower()
     {

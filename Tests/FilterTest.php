@@ -5,7 +5,7 @@ use Pentagonal\StaticHelper\FilterHelper;
  * Class TestFilter
  * PHPUnit Test FrameWork Case
  */
-class TestFilter extends \PHPUnit_Framework_TestCase
+class FilterTest extends \PHPUnit_Framework_TestCase
 {
     public function testZeroize()
     {
