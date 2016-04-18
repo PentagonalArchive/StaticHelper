@@ -4,7 +4,8 @@
 
 ## Installation
 
-`
+```php
+
 composer require pentagonal/statichelper
 
-`
+```
