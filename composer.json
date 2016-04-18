@@ -1,0 +1,21 @@
+{
+  "name": "pentagonal/statichelper",
+  "type": "library",
+  "license" : "Public Domain",
+  "description": "Helper Library Collection for any purpose",
+  "keywords": ["Helper", "Sanitize", "security", "Filter"],
+  "homepage": "http://github.com/pentagonal/statichelper/",
+  "authors": [
+    {
+      "name" : "nawa",
+      "email": "nawa@yahoo.com"
+    }
+  ],
+  "version": "1.0",
+  "require": {
+    "php": ">=5.3"
+  },
+  "autoload": {
+    "psr-0": {"Pentagonal\\StaticHelper": "src/"}
+  }
+}
