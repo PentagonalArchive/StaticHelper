@@ -1,0 +1,1 @@
+## Pentagonal Static Helper
