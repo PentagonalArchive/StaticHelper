@@ -11,7 +11,7 @@ class PathHelper
     /**
      * Cleaning path for window directory separator and trim right the separator '/'
      *
-     * @param  string $path path
+     * @param  mixed $path path
      * @return string       cleaned path
      */
     public static function cleanPath($path)
