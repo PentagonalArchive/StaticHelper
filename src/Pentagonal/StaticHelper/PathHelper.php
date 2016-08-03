@@ -109,9 +109,11 @@ class PathHelper
      */
     public static function chmod($path, $mode)
     {
-        if (is_dir($path) || is_file($file)) {
+        if (is_dir($path) || is_file($path)) {
             return @chmod($path, $mode);
         }
+
+        return false;
     }
 
     /**
@@ -140,7 +142,7 @@ class PathHelper
             return $retval[$key];
         }
         // If we're on a Unix server with safe_mode off we call is_writable
-        if (DIRECTORY_SEPARATOR === '/' && (self::isPhp('5.4') || ! @ini_get('safe_mode'))) {
+        if (DIRECTORY_SEPARATOR === '/' && (version_compare(PHP_VERSION, '5.4', '>=') || ! @ini_get('safe_mode'))) {
             $retval[$key] = self::isWritable($file);
             return $retval[$key];
         }
