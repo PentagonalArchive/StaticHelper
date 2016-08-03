@@ -21,11 +21,11 @@ class PathHelper
         }
         if (is_array($path)) {
             foreach ($path as $key => $value) {
-                $path[$key] = $this->cleanPath($value);
+                $path[$key] = self::cleanPath($value);
             }
         } elseif (is_object($path)) {
             foreach (get_object_vars($path) as $key => $value) {
-                $path->$key = $this->cleanPath($value);
+                $path->$key = self::cleanPath($value);
             }
         } elseif (is_string($path)) {
             $path = rtrim(self::cleanSlashed($path), '/');
