@@ -13,8 +13,9 @@ class StringHelper
      *
      * This prevents sandwiching null characters
      * between ascii characters, like Java\0script.
-     * @access  public
-     * @param   string
+     *
+     * @param string $str        string to parse
+     * @param bool   $url_encoded true if encoded  
      * @return string
      */
     public static function removeInvisibleCharacters($str, $url_encoded = true)
@@ -41,10 +42,10 @@ class StringHelper
     /**
      * Generate random string
      *
-     * @param  string $length       numeric as length of string output ( numeric )
-     * @param  string $type         mix, numeric, uppercase, lowercase or, alphabet
-     * @param  string $chars        for custom characters use to random
-     * @return string $randomstring
+     * @param  string|int $length       numeric as length of string output ( numeric )
+     * @param  string     $type         mix, numeric, uppercase, lowercase or, alphabet
+     * @param  string     $chars        for custom characters use to random
+     * @return string     $randomstring
      */
     public static function randomString($length = 64, $type = 'mix', $chars = null)
     {
@@ -290,8 +291,11 @@ class StringHelper
      *
      * Technically the correct unit names for powers of 1024 are KiB, MiB etc.
      *
-     * @param int|string $bytes    Number of bytes. Note max integer size for integers.
-     * @param int        $decimals Optional. Precision of number of decimal places. Default 0.
+     * @param int|string $bytes         Number of bytes. Note max integer size for integers.
+     * @param int        $decimals      Optional. Precision of number of decimal places. Default 0.
+     * @param string     $decimal_point Optional decimal point
+     * @param string     $thousands_sep Optional thousand separator
+     *
      * @return string|false False on failure. Number string on success.
      */
     public static function sizeFormat($bytes, $decimals = 0, $decimal_point = '.', $thousands_sep = ',')
@@ -328,20 +332,20 @@ class StringHelper
      * @param  bool  $usekey if as array use key true to make it lower also
      * @return mixed $result
      */
-    public static function strtoLower($value, $usekey = false)
+    public static function strToLower($value, $usekey = false)
     {
         if (is_array($value)) {
             # else if value is array
             // reset result
             // split it with loop
             foreach ($value as $key => $val) {
-                $key = $usekey ? self::strtoLower($key) : $key;
-                $value[$key] = self::strtoLower($val); # callback to self function
+                $key = $usekey ? self::strToLower($key) : $key;
+                $value[$key] = self::strToLower($val); # callback to self function
             }
         }
         if (is_object($value)) {
             foreach (get_object_vars($value) as $key => $val) {
-                $value->{$key} = self::strtoLower($val); # callback to self function
+                $value->{$key} = self::strToLower($val); # callback to self function
             }
         }
         if (is_string($value)) {
@@ -358,20 +362,20 @@ class StringHelper
      * @param  bool  $usekey if as array use key true to make it upper also
      * @return mixed $result
      */
-    public static function strtoUpper($value, $usekey = false)
+    public static function strToUpper($value, $usekey = false)
     {
         if (is_array($value)) {
             # else if value is array
             // reset result
             // split it with loop
             foreach ($value as $key => $val) {
-                $key = $usekey ? self::strtoUpper($key) : $key;
-                $value[$key] = self::strtoUpper($val); # callback to self function
+                $key = $usekey ? self::strToUpper($key) : $key;
+                $value[$key] = self::strToUpper($val); # callback to self function
             }
         }
         if (is_object($value)) {
             foreach (get_object_vars($value) as $key => $val) {
-                $value->{$key} = self::strtoUpper($val); # callback to self function
+                $value->{$key} = self::strToUpper($val); # callback to self function
             }
         }
 
@@ -388,7 +392,7 @@ class StringHelper
      *
      * @param  string             $search   for the target on $object
      * @param  string             $replacer $replace the target search match
-     * @param  mixed array|string $object   target for replace
+     * @param  mixed|array|string $object   target for replace
      * @return mixed              str_replace deep
      */
     public static function strReplace($search, $replacer, $object)
@@ -404,12 +408,12 @@ class StringHelper
                 $object[$key] = self::strReplace($search, $replacer, $val); # callback to self function
             }
         }
-        if (is_object($value)) {
+        if (is_object($object)) {
             foreach (get_object_vars($object) as $key => $val) {
                 $object->{$key} = self::strReplace($search, $replacer, $val); # callback to self function
             }
         }
-        if (is_string($value) || ! is_numeric($value)) {
+        if (is_string($object) || ! is_numeric($object)) {
             $object = str_replace($search, $replacer, $object);
         }
 
