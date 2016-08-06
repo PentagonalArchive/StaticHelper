@@ -15,20 +15,20 @@ class InternalHelper
      * @param  bool  $usekey if as array use key true to make it lower also
      * @return mixed $result
      */
-    public static function strtoLower($value, $usekey = false)
+    public static function strToLower($value, $usekey = false)
     {
         if (is_array($value)) {
             # else if value is array
             // reset result
             // split it with loop
             foreach ($value as $key => $val) {
-                $key = $usekey ? self::strtoLower($key) : $key;
-                $value[$key] = self::strtoLower($val); # callback to self function
+                $key = $usekey ? self::strToLower($key) : $key;
+                $value[$key] = self::strToLower($val); # callback to self function
             }
         }
         if (is_object($value)) {
             foreach (get_object_vars($value) as $key => $val) {
-                $value->{$key} = self::strtoLower($val); # callback to self function
+                $value->{$key} = self::strToLower($val); # callback to self function
             }
         }
         if (is_string($value)) {
@@ -45,20 +45,20 @@ class InternalHelper
      * @param  bool  $usekey if as array use key true to make it upper also
      * @return mixed $result
      */
-    public static function strtoUpper($value, $usekey = false)
+    public static function strToUpper($value, $usekey = false)
     {
         if (is_array($value)) {
             # else if value is array
             // reset result
             // split it with loop
             foreach ($value as $key => $val) {
-                $key = $usekey ? self::strtoUpper($key) : $key;
-                $value[$key] = self::strtoUpper($val); # callback to self function
+                $key = $usekey ? self::strToUpper($key) : $key;
+                $value[$key] = self::strToUpper($val); # callback to self function
             }
         }
         if (is_object($value)) {
             foreach (get_object_vars($value) as $key => $val) {
-                $value->{$key} = self::strtoUpper($val); # callback to self function
+                $value->{$key} = self::strToUpper($val); # callback to self function
             }
         }
 
@@ -75,7 +75,7 @@ class InternalHelper
      *
      * @param  string             $search   for the target on $object
      * @param  string             $replacer $replace the target search match
-     * @param  mixed array|string $object   target for replace
+     * @param  mixed|array|string $object   target for replace
      * @return mixed              str_replace deep
      */
     public static function strReplace($search, $replacer, $object)
@@ -91,12 +91,12 @@ class InternalHelper
                 $object[$key] = self::strReplace($search, $replacer, $val); # callback to self function
             }
         }
-        if (is_object($value)) {
+        if (is_object($object)) {
             foreach (get_object_vars($object) as $key => $val) {
                 $object->{$key} = self::strReplace($search, $replacer, $val); # callback to self function
             }
         }
-        if (is_string($value) || ! is_numeric($value)) {
+        if (is_string($object) || ! is_numeric($object)) {
             $object = str_replace($search, $replacer, $object);
         }
 
@@ -105,13 +105,17 @@ class InternalHelper
 
     /**
      * str_split() [php function aliases]
+     *
+     * @param $string
+     * @param int $split_length
+     * @return array|bool
      */
     public static function strSplit($string, $split_length = 1)
     {
         if (function_exists('str_split')) {
             return str_split($string, $split_length);
         }
-
+        $result = false;
         $sign = (($split_length < 0) ? -1 : 1);
         $strlen = strlen($string);
         $split_length = abs($split_length);
@@ -146,16 +150,16 @@ class InternalHelper
      * @param  mixed $value The value to be stripped.
      * @return mixed Stripped value.
      */
-    public static function stripslashes($value)
+    public static function stripSlashes($value)
     {
         if (is_array($value)) {
             foreach ($value as $key => $val) {
-                $value[$key] = self::stripslashes($val); # callback to self function
+                $value[$key] = self::stripSlashes($val); # callback to self function
             }
         }
         if (is_object($value)) {
             foreach (get_object_vars($value) as $key => $data) {
-                $value->{$key} = self::stripslashes($data);
+                $value->{$key} = self::stripSlashes($data);
             }
         }
         if (is_string($value)) {
@@ -168,7 +172,7 @@ class InternalHelper
     /**
      * Decode URL Deep
      *
-     * @param  string|array $value as value
+     * @param  mixed $value as value
      * @return mixed        decoded URL value
      */
     public static function urlDecode($value)
@@ -197,7 +201,7 @@ class InternalHelper
     /**
      * Encode URL Deep
      *
-     * @param  string|array $value as value
+     * @param  mixed $value as value
      * @return mixed        encoded URL value
      */
     public static function urlEncode($value)
@@ -223,19 +227,19 @@ class InternalHelper
     /**
      * Encode URL Deep
      *
-     * @param  string|array $value as value
+     * @param  mixed $value as value
      * @return mixed        raw encoded URL value
      */
     public static function rawUrlEncode($value)
     {
         if (is_array($value)) {
             foreach ($value as $key => $val) {
-                $value[$key] = self::rawurlencode($val); # callback to self function
+                $value[$key] = self::rawUrlEncode($val); # callback to self function
             }
         }
         if (is_object($value)) {
             foreach (get_object_vars($value) as $key => $data) {
-                $value->{$key} = self::rawurlencode($data);
+                $value->{$key} = self::rawUrlEncode($data);
             }
         }
 
@@ -302,11 +306,11 @@ class InternalHelper
             trigger_error(
                 "base64Encode() expects parameter 1 to be string, "
                 . $type
-                . " given in <b>{$file}</b> on line <b>{$line}</b><br />\n",
+                . " given in <b>{$eror['file']}</b> on line <b>{$eror['line']}</b><br />\n",
                 E_USER_ERROR
             );
 
-            return;
+            return null;
         }
         /**
          * Use Internal
@@ -366,11 +370,11 @@ class InternalHelper
             trigger_error(
                 "base64Decode() expects parameter 1 to be string, "
                 . $type
-                . " given in <b>{$file}</b> on line <b>{$line}</b><br />\n",
+                . " given in <b>{$eror['file']}</b> on line <b>{$eror['line']}</b><br />\n",
                 E_USER_ERROR
             );
 
-            return;
+            return null;
         }
 
         /**
@@ -385,8 +389,7 @@ class InternalHelper
         }
 
         $keyStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
-        $chr1 = $chr2 = $chr3 = "";
-        $enc1 = $enc2 = $enc3 = $enc4 = "";
+
         $i = 0;
         $output = "";
         // remove all characters that are not A-Z, a-z, 0-9, +, /, or =
@@ -406,8 +409,6 @@ class InternalHelper
             if ($enc4 != 64) {
                 $output = $output . chr((int) $chr3);
             }
-            $chr1 = $chr2 = $chr3 = "";
-            $enc1 = $enc2 = $enc3 = $enc4 = "";
         } while ($i < strlen($string));
 
         return urldecode($output);
@@ -435,15 +436,15 @@ class InternalHelper
             trigger_error(
                 "str2bin() expects parameter 1 to be string, "
                 . $type
-                . " given in <b>{$file}</b> on line <b>{$line}</b><br />\n",
+                . " given in <b>{$eror['file']}</b> on line <b>{$eror['line']}</b><br />\n",
                 E_USER_ERROR
             );
 
-            return;
+            return '';
         }
 
         if (strlen($string) <= 0) {
-            return;
+            return '';
         }
 
         $string = static::strSplit($string, 1);
@@ -471,15 +472,15 @@ class InternalHelper
             trigger_error(
                 "bin2str() expects parameter 1 to be string, "
                 . $type
-                . " given in <b>{$file}</b> on line <b>{$line}</b><br />\n",
+                . " given in <b>{$eror['file']}</b> on line <b>{$eror['line']}</b><br />\n",
                 E_USER_ERROR
             );
 
-            return;
+            return '';
         }
 
         if (strlen($string) <= 0) {
-            return;
+            return '';
         }
 
         $string = static::strSplit($string, 8); // NOTE: this function is PHP5 only
@@ -594,12 +595,15 @@ class InternalHelper
      *
      * @param  string  $path path to be set
      * @param  integer $mode chmod mode
+     * @return bool
      */
     public static function chmod($path, $mode)
     {
-        if (is_dir($path) || is_file($file)) {
+        if (is_dir($path) || is_file($path)) {
             return @chmod($path, $mode);
         }
+
+        return false;
     }
 
     /**
@@ -637,7 +641,7 @@ class InternalHelper
          * write a file then read it. Bah...
          */
         if (static::isDir($file)) {
-            $file = Path::cleanPath($file);
+            $file = PathHelper::cleanPath($file);
             // file random
             $file .='/'.md5(mt_rand());
             if (($fp = @fopen($file, 'ab')) === false) {
@@ -669,10 +673,10 @@ class InternalHelper
      */
     public static function readDirList($path, $directory_depth = 0, $hidden = false)
     {
-        $filedata = false;
+        $file_data = false;
         if (static::isDir($path) && $fp = opendir($path)) {
             $new_depth  = $directory_depth - 1;
-            $path = Path::cleanPath($path).'/';
+            $path = PathHelper::cleanPath($path).'/';
             while (false !== ($file = readdir($fp))) {
                 // Remove '.', '..', and hidden files [optional]
                 if ($file === '.' || $file === '..' || ($hidden === false && $file[0] === '.')) {
@@ -682,15 +686,15 @@ class InternalHelper
                 static::isDir($path.$file) && $path .= '/';
 
                 if (($directory_depth < 1 || $new_depth > 0) &&  static::isDir($path.$file)) {
-                    $filedata[$file] = static::readDirList($path.$file, $new_depth, $hidden);
+                    $file_data[$file] = static::readDirList($path.$file, $new_depth, $hidden);
                 } else {
-                    $filedata[] = $file;
+                    $file_data[] = $file;
                 }
             }
             // close resource
             closedir($fp);
         }
-        return $filedata;
+        return $file_data;
     }
 
     /**
@@ -764,6 +768,7 @@ class InternalHelper
 
         static $result,
         $tmp_uri = null;
+        $query = '';
         if (!$result || $tmp_uri !== $uri) {
             $tmp_uri = $uri;
             $query  = '';
