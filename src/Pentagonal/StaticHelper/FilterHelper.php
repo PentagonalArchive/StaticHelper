@@ -119,9 +119,9 @@ class FilterHelper
     }
 
     /**
-     * Entities the Multibytes string
+     * Entities the Multi bytes string
      *
-     * @param string $string the string to detect multibytes
+     * @param mixed   $string    the string to detect multi bytes
      * @param boolean $entities  true if want to entity the output
      *
      * @return string
@@ -175,7 +175,6 @@ class FilterHelper
      * @license GPL
      * @copyright November 4, 2001
      * @version 1.1
-     * @todo Make better - change loop condition to $text in 1.2
      *
      * Modified by Scott Reilly (coffee2code) 02 Aug 2004
      *      1.1  Fixed handling of append/stack pop order of end text
@@ -369,7 +368,7 @@ class FilterHelper
      *
      * @license followed WordPress license
      *
-     * @param  string $string Text that might have accent characters
+     * @param  mixed  $string Text that might have accent characters
      * @return string Filtered string with replaced "nice" characters.
      */
     public static function removeAccents($string)
