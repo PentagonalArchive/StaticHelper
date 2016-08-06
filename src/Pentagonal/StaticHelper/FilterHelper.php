@@ -275,6 +275,7 @@ class FilterHelper
                     // If the top of the stack is the same as the tag we want to push, close previous tag
                     if ($stacksize > 0 && !in_array($tag, $nestable_tags) && $tagstack[$stacksize - 1] == $tag) {
                         $tagqueue = '</' . array_pop($tagstack) . '>';
+                        /** @noinspection PhpUnusedLocalVariableInspection */
                         $stacksize--;
                     }
                     $stacksize = array_push($tagstack, $tag);
