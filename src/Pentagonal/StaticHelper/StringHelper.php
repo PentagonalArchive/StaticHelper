@@ -15,7 +15,7 @@ class StringHelper
      * between ascii characters, like Java\0script.
      *
      * @param string $str        string to parse
-     * @param bool   $url_encoded true if encoded  
+     * @param bool   $url_encoded true if encoded
      * @return string
      */
     public static function removeInvisibleCharacters($str, $url_encoded = true)
@@ -108,13 +108,13 @@ class StringHelper
         }
 
         static $result,
-        $tmpjson;
+        $tmp_json;
 
-        if ($result  && $tmpjson === $json) {
+        if ($result  && $tmp_json === $json) {
             return $result;
         }
 
-        $tmpjson     = $json;           # create temporary variable $json
+        $tmp_json     = $json;           # create temporary variable $json
         $result      = '';              # reset result
         $pos         = 0;               # get pos
         $strLen      = strlen($json); # count the length of jsonp
@@ -253,6 +253,7 @@ class StringHelper
 
         $token = $data[0];
         switch ($token) {
+            /** @noinspection PhpMissingBreakStatementInspection */
             case 's':
                 if ($strict) {
                     if ('"' !== substr($data, -2, 1)) {
@@ -323,247 +324,5 @@ class StringHelper
         }
 
         return false;
-    }
-
-    /**
-     * Deep mixed string or array to lowercase ( array keys also array values )
-     *
-     * @param  mixed $value  as to lower content
-     * @param  bool  $usekey if as array use key true to make it lower also
-     * @return mixed $result
-     */
-    public static function strToLower($value, $usekey = false)
-    {
-        if (is_array($value)) {
-            # else if value is array
-            // reset result
-            // split it with loop
-            foreach ($value as $key => $val) {
-                $key = $usekey ? self::strToLower($key) : $key;
-                $value[$key] = self::strToLower($val); # callback to self function
-            }
-        }
-        if (is_object($value)) {
-            foreach (get_object_vars($value) as $key => $val) {
-                $value->{$key} = self::strToLower($val); # callback to self function
-            }
-        }
-        if (is_string($value)) {
-            $value = strtolower($value);
-        }
-
-        return $value;
-    }
-
-    /**
-     * Deep mixed string or array to uppercase ( array keys also array values )
-     *
-     * @param  mixed $value  as to lower content
-     * @param  bool  $usekey if as array use key true to make it upper also
-     * @return mixed $result
-     */
-    public static function strToUpper($value, $usekey = false)
-    {
-        if (is_array($value)) {
-            # else if value is array
-            // reset result
-            // split it with loop
-            foreach ($value as $key => $val) {
-                $key = $usekey ? self::strToUpper($key) : $key;
-                $value[$key] = self::strToUpper($val); # callback to self function
-            }
-        }
-        if (is_object($value)) {
-            foreach (get_object_vars($value) as $key => $val) {
-                $value->{$key} = self::strToUpper($val); # callback to self function
-            }
-        }
-
-        if (is_string($value)) {
-            $value = strtoupper($value);
-        }
-
-        return $value;
-    }
-
-    /**
-     * Deep str_replace
-     * alternative for str replace for array values
-     *
-     * @param  string             $search   for the target on $object
-     * @param  string             $replacer $replace the target search match
-     * @param  mixed|array|string $object   target for replace
-     * @return mixed              str_replace deep
-     */
-    public static function strReplace($search, $replacer, $object)
-    {
-        if (! $object) {
-            return $object;
-        }
-        if (is_array($object)) {
-            # else if value is array
-            // reset result
-            // split it with loop
-            foreach ($object as $key => $val) {
-                $object[$key] = self::strReplace($search, $replacer, $val); # callback to self function
-            }
-        }
-        if (is_object($object)) {
-            foreach (get_object_vars($object) as $key => $val) {
-                $object->{$key} = self::strReplace($search, $replacer, $val); # callback to self function
-            }
-        }
-        if (is_string($object) || ! is_numeric($object)) {
-            $object = str_replace($search, $replacer, $object);
-        }
-
-        return $object;
-    }
-
-    /**
-     * str_split() [php function aliases]
-     *
-     * @param $string
-     * @param int $split_length
-     * @return array|bool
-     */
-    public static function strSplit($string, $split_length = 1)
-    {
-        if (function_exists('str_split')) {
-            return str_split($string, $split_length);
-        }
-        $result = false;
-        $sign = (($split_length < 0) ? -1 : 1);
-        $strlen = strlen($string);
-        $split_length = abs($split_length);
-        if (($split_length == 0) || ($strlen == 0)) {
-            $result = false;
-        } elseif ($split_length >= $strlen) {
-            $result[] = $string;
-        } else {
-            $length = $split_length;
-            for ($i = 0; $i < $strlen; $i++) {
-                $i = (($sign < 0) ? $i + $length : $i);
-                $result[] = substr($string, $sign*$i, $length);
-                $i--;
-                $i = (($sign < 0) ? $i : $i + $length);
-                if (($i + $split_length) > ($strlen)) {
-                    $length = $strlen - ($i + 1);
-                } else {
-                    $length = $split_length;
-                }
-            }
-        }
-
-        return $result;
-    }
-
-    /**
-     * Navigates through an array and removes slashes from the values.
-     *
-     * If an array is passed, the array_map() function causes a callback to pass the
-     * value back to the function. The slashes from this value will removed.
-     *
-     * @param  mixed $value The value to be stripped.
-     * @return mixed Stripped value.
-     */
-    public static function stripslashes($value)
-    {
-        if (is_array($value)) {
-            foreach ($value as $key => $val) {
-                $value[$key] = self::stripslashes($val); # callback to self function
-            }
-        }
-        if (is_object($value)) {
-            foreach (get_object_vars($value) as $key => $data) {
-                $value->{$key} = self::stripslashes($data);
-            }
-        }
-        if (is_string($value)) {
-            $value = stripslashes($value);
-        }
-
-        return $value;
-    }
-
-    /**
-     * Decode URL Deep
-     *
-     * @param  mixed $value as value
-     * @return mixed        decoded URL value
-     */
-    public static function urlDecode($value)
-    {
-        if (is_array($value)) {
-            foreach ($value as $key => $val) {
-                $value[$key] = self::urlDecode($val); # callback to self function
-            }
-        }
-        if (is_object($value)) {
-            foreach (get_object_vars($value) as $key => $data) {
-                $value->{$key} = self::urlDecode($data);
-            }
-        }
-
-        if (is_string($value)) {
-            $value = urldecode($value);
-            if (strpos($value, '%2') !== false) {
-                $value = self::urlDecode($value);
-            }
-        }
-
-        return $value;
-    }
-
-    /**
-     * Encode URL Deep
-     *
-     * @param  mixed $value as value
-     * @return mixed        encoded URL value
-     */
-    public static function urlEncode($value)
-    {
-        if (is_array($value)) {
-            foreach ($value as $key => $val) {
-                $value[$key] = self::urlEncode($val); # callback to self function
-            }
-        }
-        if (is_object($value)) {
-            foreach (get_object_vars($value) as $key => $data) {
-                $value->{$key} = self::urlEncode($data);
-            }
-        }
-
-        if (is_string($value)) {
-            $value = urlencode($value);
-        }
-
-        return $value;
-    }
-
-    /**
-     * Encode URL Deep
-     *
-     * @param  mixed $value as value
-     * @return mixed        raw encoded URL value
-     */
-    public static function rawUrlEncode($value)
-    {
-        if (is_array($value)) {
-            foreach ($value as $key => $val) {
-                $value[$key] = self::rawUrlEncode($val); # callback to self function
-            }
-        }
-        if (is_object($value)) {
-            foreach (get_object_vars($value) as $key => $data) {
-                $value->{$key} = self::rawUrlEncode($data);
-            }
-        }
-
-        if (is_string($value)) {
-            $value = rawurlencode($value);
-        }
-
-        return $value;
     }
 }
